@@ -17,13 +17,16 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 
 from routes.views import *
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('sumbitData/', RoutesAPIList.as_view()),
-    path('sumbitData/<int:id>', RoutesAPIUpdate.as_view()),
-    path('sumbitData_new/<int:id>', RoutesAPIDetailView.as_view())
+    path('api/v1/pereval-auth', include('rest_framework.urls')),
+    path('api/v1/sumbitData/', RoutesAPIList.as_view()),
+    path('api/v1/sumbitData/new', RoutesAPIUpdate.as_view()),
+    path('api/v1/sumditDatadelite/new', RoutesAPIDestroy.as_view()),
 ]

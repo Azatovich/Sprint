@@ -1,56 +1,60 @@
 from django.forms import model_to_dict
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Routes
-from .serializer import RoutesSerializer
+from .models import Routes, Category, User, Level, Coords
+from .permission import IsAdminOrReadOnly, IsOnwerOrReadOnly
+from .serializer import RoutesSerializer, CategorySerializer, UserSerializer, LevelSerializer, CoordsSerializer
+
+
+# class RoutesViewSet(viewsets.ModelViewSet):
+#     queryset = Routes.objects.all()
+#     serializer_class = RoutesSerializer
+#
+# class CategoryViewSet(viewsets.ModelViewSet):
+#     queryset = Category.objects.all()
+#     serializer_class = CategorySerializer
+#
+# class UserViewSet(viewsets.ModelViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+#
+# class LevelViewSet(viewsets.ModelViewSet):
+#     queryset = Level.objects.all()
+#     serializer_class = LevelSerializer
+#
+# class CoordsViewSet(viewsets.ModelViewSet):
+#     queryset = Coords.objects.all()
+#     serializer_class = CoordsSerializer
+
 
 class RoutesAPIList(generics.ListCreateAPIView):
     queryset = Routes.objects.all()
     serializer_class = RoutesSerializer
-
-class RoutesAPIUpdate(generics.UpdateAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+class RoutesAPIUpdate(generics.RetrieveUpdateAPIView):
    queryset = Routes.objects.all()
    serializer_class = RoutesSerializer
+   permission_classes = (IsOnwerOrReadOnly, )
 
-class RoutesAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
+class RoutesAPIDestroy(generics.RetrieveDestroyAPIView):
    queryset = Routes.objects.all()
    serializer_class = RoutesSerializer
+   permission_classes = (IsAdminOrReadOnly, )
 
-# class RoutesAPIView(APIView):
-#     def get(self,request):
-#         r = Routes.objects.all()
-#         return Response({'posts': RoutesSerializer(r, many=True).data})
-#
-#     def post(self, request):
-#         serializer = RoutesSerializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-#
-#         return  Response({'post': serializer.data})
-#
-#     def put(self, request, *args, **kwargs):
-#         pk = kwargs.get("pk", None)
-#         if not id:
-#             return Response({"error": "Method PUT not allowed"})
-#
-#         try:
-#             instance = Routes.objects.get(id=id)
-#         except:
-#             return Response({"error": "Method PUT not allowed"})
-#
-#         serializer = RoutesSerializer(data=request.data, instance=instance)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-#         return Response({"post": serializer.data})
+class CategoryAPIList(generics.ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
+class CategoryAPIUpdate(generics.UpdateAPIView):
+   queryset = Category.objects.all()
+   serializer_class = CategorySerializer
 
-#        new_routes = Routes.objects.create(
-#           titele=request.data['titele'],
-#            content=request.data['content'],
-#            )
-#
-#        return Response({'post': model_to_dict(new_routes)})
+class CategoryAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
+   queryset = Category.objects.all()
+   serializer_class = CategorySerializer
+
 

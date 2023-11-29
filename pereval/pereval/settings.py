@@ -130,6 +130,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 REST_FRAEMWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRender',
+    ],
+    'DEFAULT_PERMISSIONS_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
     ]
 }
