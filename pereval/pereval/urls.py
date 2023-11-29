@@ -19,9 +19,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from routes.views import RoutesAPIView
+from routes.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('sumbitData/', RoutesAPIView.as_view())
+    path('sumbitData/', RoutesAPIList.as_view()),
+    path('sumbitData/<int:id>', RoutesAPIUpdate.as_view()),
+    path('sumbitData_new/<int:id>', RoutesAPIDetailView.as_view())
 ]

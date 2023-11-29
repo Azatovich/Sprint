@@ -7,22 +7,50 @@ from rest_framework.views import APIView
 from .models import Routes
 from .serializer import RoutesSerializer
 
-class RoutesAPIView(APIView):
-    def get(self,request):
-        r = Routes.objects.all()
-        return Response({'posts': RoutesSerializer(r, many=True).data})
+class RoutesAPIList(generics.ListCreateAPIView):
+    queryset = Routes.objects.all()
+    serializer_class = RoutesSerializer
 
-    def post(self, request):
-        serializer = RoutesSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+class RoutesAPIUpdate(generics.UpdateAPIView):
+   queryset = Routes.objects.all()
+   serializer_class = RoutesSerializer
 
-        new_routes = Routes.objects.create(
-            titele=request.data['titele'],
-            content=request.data['content'],
-            )
+class RoutesAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
+   queryset = Routes.objects.all()
+   serializer_class = RoutesSerializer
 
-        return Response({'post': model_to_dict(new_routes)})
+# class RoutesAPIView(APIView):
+#     def get(self,request):
+#         r = Routes.objects.all()
+#         return Response({'posts': RoutesSerializer(r, many=True).data})
+#
+#     def post(self, request):
+#         serializer = RoutesSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#
+#         return  Response({'post': serializer.data})
+#
+#     def put(self, request, *args, **kwargs):
+#         pk = kwargs.get("pk", None)
+#         if not id:
+#             return Response({"error": "Method PUT not allowed"})
+#
+#         try:
+#             instance = Routes.objects.get(id=id)
+#         except:
+#             return Response({"error": "Method PUT not allowed"})
+#
+#         serializer = RoutesSerializer(data=request.data, instance=instance)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response({"post": serializer.data})
 
-#class RoutesAPIView(generics.ListAPIView):
-#    queryset = Routes.objects.all()
-#    serializer_class = RoutesSerializer
+
+#        new_routes = Routes.objects.create(
+#           titele=request.data['titele'],
+#            content=request.data['content'],
+#            )
+#
+#        return Response({'post': model_to_dict(new_routes)})
+
