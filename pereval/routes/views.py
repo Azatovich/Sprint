@@ -1,7 +1,7 @@
 from django.forms import model_to_dict
 from django.shortcuts import render
 from rest_framework import generics, viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -38,7 +38,7 @@ class RoutesAPIList(generics.ListCreateAPIView):
 class RoutesAPIUpdate(generics.RetrieveUpdateAPIView):
    queryset = Routes.objects.all()
    serializer_class = RoutesSerializer
-   permission_classes = (IsOnwerOrReadOnly, )
+   permission_classes = (IsAuthenticated, )
 
 class RoutesAPIDestroy(generics.RetrieveDestroyAPIView):
    queryset = Routes.objects.all()
